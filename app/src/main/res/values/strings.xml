@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SMS to Telegram</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Steps-->
+    <string name="steps">Instructions</string>
+    <string name="step1">Step 1: Adding Bot to Telegram.</string>
+    <string name="step1data">Go to your Telegram App and Search for this <a href="https://telegram.me/SMJBot" target="_top">@SMJBot</a> and click START</string>
+    <string name="step2">Step 2: Give the App Read SMS Permission.</string>
+    <string name="step2data">Click below button, to give permissions if not already</string>
+    <string name="step3">Step 3: Enter your Telegram ID.</string>
+    <string name="step3data">You can find your Telegram ID by using this <a href="https://telegram.me/userinfobot">@userinfobot</a></string>
+
+</resources>
