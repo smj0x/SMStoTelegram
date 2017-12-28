@@ -45,14 +45,13 @@ public class Storage {
         preferences  = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         // Add the new value.
-        Set<String> myStrings = preferences.getStringSet(key, new HashSet<String>());
+        Set<String> myStrings = readSet(key);
         myStrings.add(value);
         editor.apply();
     }
     public Set<String> readSet(String key){
         // Get the current list.
         preferences  = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
-        Set<String> myStrings = preferences.getStringSet(key, new HashSet<String>());
-        return myStrings;
+        return  preferences.getStringSet(key, null);
     }
 }

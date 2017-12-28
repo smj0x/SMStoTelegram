@@ -7,7 +7,7 @@ package com.smodj.app.smstotelegram.Constants;
 
 public class MainConstant {
     public static final String pkg = "com.smodj.app.smstotelegram";
-    private static final String bot_id = "138892312:AAEJMlbP84LiMYcuHCZKz9kCr_LwrCo81A0";
+    private static final String bot_id = "$";
     public static final String telegram_url = "https://api.telegram.org/bot"+bot_id+"/sendMessage";
     public static final String telegram_id_storage_key= "TelegramID";
     public static final String unsent_msgs_stack = "DELAYED_STACK";

@@ -16,19 +16,18 @@ import com.intentfilter.androidpermissions.PermissionManager;
 import com.smodj.app.smstotelegram.Constants.MainConstant;
 import com.smodj.app.smstotelegram.Workers.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static java.util.Collections.singleton;
 
 
 public class MainActivity extends AppCompatActivity {
-    int flag = 0;
     EditText telegram_id_field;
     Storage store = new Storage(this);
     String telegram_id_storage_value;
     Button save,givePermissions;
     TextView step1data, step3data, permissions;
-    private static final String PERMISSION_1 = "Manifest.permission.READ_SMS";
-    private static final String PERMISSION_2 = "Manifest.permission.RECEIVE_SMS";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         telegram_id_field = findViewById(R.id.editText);
-        String telegram_id_storage_value = store.read(MainConstant.telegram_id_storage_key);
+        telegram_id_storage_value = store.read(MainConstant.telegram_id_storage_key);
         save = findViewById(R.id.save);
         givePermissions = findViewById(R.id.givePermissions);
         step1data = findViewById(R.id.step1data);
@@ -63,20 +62,24 @@ public class MainActivity extends AppCompatActivity {
             permissions.setText("Required permissions are present");
             permissions.setTextColor(getResources().getColor(R.color.colorGreen));
         }
+
+
+
+
     }
     public void save(View view){
         String telegram_id = telegram_id_field.getText().toString();
         if(!telegram_id.isEmpty()){
             if(telegram_id_storage_value!=null) {
                 if (!telegram_id_storage_value.equals(telegram_id)) {
-                    store.write("TelegramID", telegram_id);
+                    store.write(MainConstant.telegram_id_storage_key, telegram_id);
                     Toaster.print(this, "ID Saved");
                 } else {
                     Toaster.print(this, "ID Already Exists");
                 }
             }
-            else{
-                store.write("TelegramID", telegram_id);
+           else{
+                store.write(MainConstant.telegram_id_storage_key, telegram_id);
                 Toaster.print(this, "ID Saved");
             }
         }
@@ -87,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void givePermissions(View view) {
 
-
-
         final PermissionManager permissionManager = PermissionManager.getInstance(this);
         permissionManager.checkPermissions( singleton(Manifest.permission.READ_SMS), new PermissionManager.PermissionRequestListener() {
             @Override
@@ -96,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 permissionManager.checkPermissions( singleton(Manifest.permission.RECEIVE_SMS), new PermissionManager.PermissionRequestListener() {
                     @Override
                     public void onPermissionGranted() {
-
-                        incFlag();
                         Toaster.print(MainActivity.this,"Permissions Granted");
                         givePermissions.setEnabled(false);
                         permissions.setText("Required permissions are present");
@@ -119,12 +118,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-    }
-
-    public void incFlag()
-    {
-        flag++;
     }
 }

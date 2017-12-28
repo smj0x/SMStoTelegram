@@ -20,7 +20,9 @@ import com.smodj.app.smstotelegram.Workers.StackMessages;
 import com.smodj.app.smstotelegram.Workers.Storage;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by smj on 12/25/17.
@@ -41,8 +43,7 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
                 final Object[] pdusObj = (Object[]) bundle.get("pdus");
                 for (int i = 0; i < pdusObj.length; i++) {
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
-                    String phoneNumber = currentMessage.getDisplayOriginatingAddress();
-                     senderNum = phoneNumber;
+                     senderNum = currentMessage.getDisplayOriginatingAddress();
                      message = message + currentMessage.getDisplayMessageBody();
                     //Log.i("SmsReceiver", "senderNum: "+ senderNum + "; message: " + message);
                 }// end for loop
@@ -54,7 +55,21 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
                 String url = MainConstant.telegram_url;
 
                 //calling Telegram API
-                sendToTelegramAPI(context, telegram_id, msg, url);
+                StackMessages stack = new StackMessages(context);
+
+                if (stack.getStack()!=null){
+                    Set<String> unsentMsgs = stack.getStack();
+                    for ( String unsentMsg : unsentMsgs){
+                        sendToTelegramAPI(context, telegram_id, unsentMsg, url,stack);
+                    }
+                    sendToTelegramAPI(context, telegram_id, msg, url,stack);
+                    stack.clearStack();
+
+                }
+                else{
+                    sendToTelegramAPI(context, telegram_id, msg, url,stack);
+                }
+
 
 
             } // bundle is null
@@ -63,11 +78,8 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
             Log.e("SmsReceiver", "Exception smsReceiver" +e);
 
         }
-
-
     }
-
-    private void sendToTelegramAPI(final Context context, final String telegram_id, final String msg, final String url) {
+    private void sendToTelegramAPI(final Context context, final String telegram_id, final String msg, final String url,final StackMessages stack) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -83,19 +95,17 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("VolleyError","That didn't work!");
-                        StackMessages stack = new StackMessages(context);
                         stack.addToStack(msg);
-                        Log.d("VolleyError",String.join("$SMJ$",stack.getStack()));
                     }
                 }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("chat_id", telegram_id);
-                params.put("text", msg);
-                return params;
-            }
+                ){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("chat_id", telegram_id);
+                        params.put("text", msg);
+                        return params;
+                    }
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
