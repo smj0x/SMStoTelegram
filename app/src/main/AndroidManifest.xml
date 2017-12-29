@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.READ_SMS"/>
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_sms"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/ic_sms"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -27,6 +27,11 @@
         <receiver android:name=".SMSBroadcastReader" android:exported="true" >
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".NetBroadcastReceiver">
+            <intent-filter android:priority="2147483647" >
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
     </application>

