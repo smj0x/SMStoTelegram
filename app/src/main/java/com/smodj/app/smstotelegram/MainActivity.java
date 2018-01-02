@@ -1,12 +1,17 @@
 package com.smodj.app.smstotelegram;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         step3data.setMovementMethod(LinkMovementMethod.getInstance());
         permissions = findViewById(R.id.permissions);
 
-
         //Setting Id to field if it already exist's
         if(telegram_id_storage_value!=null){
             telegram_id_field.setText(telegram_id_storage_value);
@@ -62,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
             permissions.setText("Required permissions are present");
             permissions.setTextColor(getResources().getColor(R.color.colorGreen));
         }
-
-
-
 
     }
     public void save(View view){
@@ -118,5 +119,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.sttngs:
+                Intent intent = new Intent(MainActivity.this, Settings.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

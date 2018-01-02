@@ -3,7 +3,9 @@ package com.smodj.app.smstotelegram;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -51,7 +53,13 @@ public class SMSBroadcastReader  extends BroadcastReceiver {
                 //Set all parameters
                 Storage read = new Storage(context);
                 final String telegram_id = read.read(MainConstant.telegram_id_storage_key);
-                final String msg = "From: "+senderNum+"\nDevice Info: "+android.os.Build.MANUFACTURER+"|"+android.os.Build.MODEL+"\nMessage:\n"+message;
+                //Target Device Name
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+                String device_name = settings.getString("DeviceName", "Default");
+                if(device_name.equals("Default")){
+                    device_name = android.os.Build.MANUFACTURER+"|"+android.os.Build.MODEL;
+                }
+                final String msg = "From: "+senderNum+"\nDevice Info: "+device_name+"\nMessage:\n"+message;
                 String url = MainConstant.telegram_url;
 
                 //calling Telegram API
