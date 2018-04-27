@@ -5,7 +5,7 @@ https://play.google.com/store/apps/details?id=com.smodj.app.smstotelegram&hl=en
 
 # Demo:
 
-https://www.youtube.com/watch?v=RhfcwsKH1ls
+https://www.youtube.com/watch?v=k2et1O_vFmg
 
 # Contributors
 
