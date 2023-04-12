@@ -1,0 +1,8 @@
+
+.kelas  L org/telegram/ui/ChangePhoneActivity$LoginActivitySMSLihat$7$1 ;
+.super  L java/lang/Objek ;
+.field  final sintetik this$2 : L org/telegram/ui/ChangePhoneActivity$LoginActivitySMSLihat$7 ;
+
+
+# metode langsung
+.method  konstruktor <init> ( Lorg/telegram/ui/ChangePhoneActivity$LoginActivitySmsView$7; ) V
